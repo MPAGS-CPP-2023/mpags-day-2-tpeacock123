@@ -78,18 +78,29 @@ returns upper-case letter or number of word
 // - In each case, add result to a string variable  
 } 
 
-void processCommandLine(const std::vector<std::string>& cmdLineArgs, bool& Help, std::string& input_file, std::string& output_file)
+void processCommandLine(const std::vector<std::string>& cmdLineArgs, bool& Help, Bool& Version, std::string& input_file, std::string& output_file)
+/* 
+~~~~~~ProcessCommandLine~~~~~~~~
+input:
+-vector containing command line arguments
+-empty variables help, input_file and output_file
+output:
+-nothing, but searches cmdlineargs for occurences of -h,-i,-o 
+-if -h is found, help user (turn help = true)
+-if -i or -o is found, save next argument as input_file or output_file 
+*/
 {
-    //const std::vector<std::string> cmdLineArgs {argv, argv+argc };
     for(int i = 0; i < (cmdLineArgs.size()); i++)
     {
         if(cmdLineArgs[i] == "-h" ||cmdLineArgs[i] == "--help"){
             Help = true; 
         }
+        if(cmdLineArgs[i] == "-v" ||cmdLineArgs[i] == "--version"){
+            Version = true; 
+        }
 
         if(cmdLineArgs[i] == "-i"){
             input_file = cmdLineArgs[i+1];
-            std::cout << input_file; 
         }
 
         if(cmdLineArgs[i] == "-o"){
@@ -101,38 +112,19 @@ void processCommandLine(const std::vector<std::string>& cmdLineArgs, bool& Help,
 
 int main(int argc, char* argv[])
 {
-    const std::vector<std::string> cmdLineArgs {argv, argv+argc };
+    const std::vector<std::string> cmdLineArgs {argv, argv+argc};
+
     std::string input_file{""};
     std::string output_file{""};
     bool Help = false;
-
-    std::cout << Help << "\n";
-    std::cout << input_file << "\n";
-    std::cout << output_file << "\n";
+    bool Version = false;
 
     processCommandLine(cmdLineArgs, Help, input_file, output_file);
 
     std::cout << Help << "\n";
     std::cout << input_file << "\n";
     std::cout << output_file << "\n";
-
-/*   for(int i = 0; i < argc; i++){
-        if(cmdLineArgs[i] == "-h" ||cmdLineArgs[i] == "--help"){
-            std::cout << "uh oh" << std::endl;
-
-        }
-        if(cmdLineArgs[i] == "-i"){
-            std::string input_file = cmdLineArgs[i+1];
-            std::cout << "input file is "<< input_file << std::endl;
-        }
-        if(cmdLineArgs[i] == "-o"){
-            std::string output_file = cmdLineArgs[i+1];
-            std::cout << "output file is "<< output_file << std::endl;
-        }
-    }
-*/
- 
-
+    
     char in_char{'x'};
     std::string out_str{""};
 
