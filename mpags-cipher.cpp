@@ -78,7 +78,7 @@ returns upper-case letter or number of word
 // - In each case, add result to a string variable  
 } 
 
-void processCommandLine(const std::vector<std::string>& cmdLineArgs, bool& Help, Bool& Version, std::string& input_file, std::string& output_file)
+void processCommandLine(const std::vector<std::string>& cmdLineArgs, bool& Help, bool& Version, std::string& input_file, std::string& output_file)
 /* 
 ~~~~~~ProcessCommandLine~~~~~~~~
 input:
@@ -119,12 +119,12 @@ int main(int argc, char* argv[])
     bool Help = false;
     bool Version = false;
 
-    processCommandLine(cmdLineArgs, Help, input_file, output_file);
+    processCommandLine(cmdLineArgs, Help, Version, input_file, output_file);
 
     std::cout << Help << "\n";
     std::cout << input_file << "\n";
     std::cout << output_file << "\n";
-    
+
     char in_char{'x'};
     std::string out_str{""};
 
