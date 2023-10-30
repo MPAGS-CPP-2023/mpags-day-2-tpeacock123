@@ -6,11 +6,13 @@
 
 #include "TransformChar.hpp"
 #include "processCommandLine.hpp"
+#include "runCaesarCipher.hpp"
 
 int main(int argc, char* argv[])
 {
     // Convert the command-line arguments into a more easily usable form
     const std::vector<std::string> cmdLineArgs{argv, argv + argc};
+    std::cout << "size" << cmdLineArgs.size();
     
 
     // Options that might be set by the command-line arguments
@@ -18,10 +20,17 @@ int main(int argc, char* argv[])
     bool versionRequested{false};
     std::string inputFile{""};
     std::string outputFile{""};
+    bool encrypt{true};
+    std::string key{"5"};
+    std::string output_text{""};
 
     // Process command line arguments - ignore zeroth element, as we know this
     // to be the program name and don't need to worry about it
-    bool x = processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile);
+    bool x = processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, encrypt, key);
+    std::cout << key << "is key"; 
+    size_t key2 = stoul(key);
+    std::cout << key2;
+     
 
     if(x == true){
         std::cout << "oky";
@@ -82,9 +91,15 @@ int main(int argc, char* argv[])
         }
         
     }
- 
+    std::cout << key2 << "\n" << encrypt <<inputText;
+    
+    output_text = runCaesarCipher(inputText, key2, encrypt);
+    std::cout << output_text << "boo\n";
+
+   
+
     if (outputFile.empty()) {
-        std::cout << inputText << std::endl;
+        std::cout << output_text << std::endl;
         std::cerr << "[warning] output to file ('" << outputFile
                   << "') not implemented yet, using stdout\n";
         
@@ -94,7 +109,7 @@ int main(int argc, char* argv[])
         bool ok_to_read = out_file.good();
 
         if(ok_to_read){
-            out_file << inputText; 
+            out_file << output_text; 
             out_file.close();
             } else{
             std::cerr << "[warning] output file not read properly";
@@ -105,6 +120,7 @@ int main(int argc, char* argv[])
     // and for consistency with other functions
     return 0;
 }
+
 
 
 
