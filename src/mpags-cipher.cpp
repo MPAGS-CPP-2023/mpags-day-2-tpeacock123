@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 #include "TransformChar.hpp"
 #include "processCommandLine.hpp"
@@ -20,9 +21,11 @@ int main(int argc, char* argv[])
 
     // Process command line arguments - ignore zeroth element, as we know this
     // to be the program name and don't need to worry about it
-    processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile);
+    bool x = processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile);
 
-    
+    if(x == true){
+        std::cout << "oky";
+    } 
 
     // Handle help, if requested
     if (helpRequested) {
@@ -58,23 +61,46 @@ int main(int argc, char* argv[])
 
     // Read in user input from stdin/file
     // Warn that input file option not yet implemented
-    if (!inputFile.empty()) {
+
+
+    if (inputFile.empty()){
         std::cerr << "[warning] input from file ('" << inputFile
                   << "') not implemented yet, using stdin\n";
+        while (std::cin >> inputChar) {
+            inputText += TransformChar(inputChar);
+        }
+    } else {
+        std::ifstream in_file {inputFile};
+        bool ok_to_read = in_file.good();
+        if(ok_to_read == true){
+            while (in_file >> inputChar) {
+              inputText += TransformChar(inputChar);
+            }    
+        }
+        else{
+            std::cerr << "[warning] input file not read properly";
+        }
+        
     }
-    
-    while (std::cin >> inputChar) {
-        inputText += TransformChar(inputChar);
-    }
-    
-    std::cout << inputText << std::endl;
-   
-
-    // Warn that output file option not yet implemented
-    if (!outputFile.empty()) {
+ 
+    if (outputFile.empty()) {
+        std::cout << inputText << std::endl;
         std::cerr << "[warning] output to file ('" << outputFile
                   << "') not implemented yet, using stdout\n";
+        
+    }  else {
+
+        std::ofstream out_file {outputFile};
+        bool ok_to_read = out_file.good();
+
+        if(ok_to_read){
+            out_file << inputText; 
+            out_file.close();
+            } else{
+            std::cerr << "[warning] output file not read properly";
+        }     
     }
+
     // No requirement to return from main, but we do so for clarity
     // and for consistency with other functions
     return 0;
